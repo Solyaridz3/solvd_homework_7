@@ -33,7 +33,6 @@ const functionsArray = [
 chainPromises(functionsArray)
     .then((result) => {
         console.log("Chained promise result:", result);
-        // Expected: "Result from asyncFunction1 - Result from asyncFunction2 - Result from asyncFunction3"
     })
     .catch((error) => {
         console.error("Chained promise error:", error);

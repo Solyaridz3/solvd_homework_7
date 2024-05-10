@@ -1,26 +1,35 @@
-const promises = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+const promises = [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+];
 const promise4 = new Promise((resolve) => {
     setTimeout(resolve, 1000, "Promise 4");
 });
 
-// const promise5 = new Promise((_, reject) => {
-//     setTimeout(reject, 2000, new Error("Promise 5 error"));
-// });
 
+/**
+ * Executes an array of promises concurrently and returns a promise that resolves to an array of results.
+ *
+ * @param {Array<Promise>} promises - An array of promises to be executed concurrently.
+ * @return {Promise<Array>} A promise that resolves to an array of results, in the same order as the input promises.
+ */
 function promiseAll(promises) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const results = [];
         promises.forEach((promise, index) => {
-            Promise.resolve(promise).then((result) => {
-                // if error it rejects it without explicit rejection
-                results[index] = result;
-                if (results.length === promises.length) {
-                    resolve(results);
-                }
-            });
+            Promise.resolve(promise)
+                .then((result) => {
+                    results[index] = result;
+                    if (results.length === promises.length) {
+                        resolve(results);
+                    }
+                }).catch(reject);
         });
     });
 }
+
+
 
 /** Async realization, I mean anyway it returns promise */
 // async function promiseAll(promises) {
